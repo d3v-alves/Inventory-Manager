@@ -1,0 +1,9 @@
+# IntelliJ IDEA
+.idea/
+*.iml
+out/
+gen/
+
+# Compilação e Build
+target/
+build/
