@@ -7,3 +7,4 @@ gen/
 # Compilação e Build
 target/
 build/
+*.csv
