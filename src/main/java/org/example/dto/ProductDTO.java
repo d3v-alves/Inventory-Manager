@@ -8,7 +8,7 @@ public class ProductDTO {
     private final int quantity;
     private final double price;
     private final Category category;
-
+    
     public ProductDTO(String name, int quantity, double price, Category category) {
         this.name = name;
         this.quantity = quantity;
