@@ -8,8 +8,9 @@ import org.example.repository.MemoryProductRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class ProductServiceTest {
 
@@ -77,6 +78,22 @@ class ProductServiceTest {
         service.addProduct(new ProductDTO("Rice", 10, 25.0, Category.ALIMENTO));
         assertThrows(InvalidProductException.class,
                 () -> service.updateProduct("Rice", -5, null));
+    }
+
+    @Test
+    void shouldReturnEmptyListWhenNoProductsExist() {
+        List<ProductDTO> products = service.listProduct();
+        assertTrue(products.isEmpty());
+    }
+
+    @Test
+    void shouldListAllAddedProducts() {
+        service.addProduct(new ProductDTO("Rice", 10, 25.0, Category.ALIMENTO));
+        service.addProduct(new ProductDTO("Soap", 3, 5.0, Category.LIMPEZA));
+
+        List<ProductDTO> products = service.listProduct();
+
+        assertEquals(2, products.size());
     }
 
     @Test
