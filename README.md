@@ -1,81 +1,64 @@
 # Inventory Manager
 
-Console-based inventory management system built in Java as a study project, focused on practicing Object-Oriented Programming, layered architecture, and unit testing.
+A console-based inventory manager written in Java. This is a study project. I'm using it to practice OOP, layered architecture, and unit testing while also training my English (that's why classes, variables, and commit messages are in English, even though earlier commits still have some Portuguese in them).
 
-## About the project
+## Why this project
 
-This project started as a simple console CRUD and evolved step by step into a more professional structure, applying concepts commonly used in real-world Java applications:
+I wanted something simple enough to actually finish and iterate on, but real enough to practice concepts: interfaces, dependency injection, DTOs, custom exceptions, and testing. So instead of jumping straight to "the complete version," I built it in stages starting with a plain CRUD in a single class, then gradually splitting it into layers as I learned why each piece exists.
 
-- Layered architecture (Model, DTO, Mapper, Repository, Service)
-- Dependency Inversion via interfaces
-- Dependency Injection (constructor-based)
-- Custom exceptions for business rule validation
-- File persistence (CSV)
-- Unit testing with JUnit 5
-
-## Tech stack
+## Stack
 
 - Java 21
 - Maven
 - JUnit 5
 
-## Project structure
+## Structure
 
 ```
 src/
 ├── main/java/org/example/
-│   ├── model/         # Domain entities (Product, Category)
-│   ├── dto/            # Data Transfer Objects (ProductDTO)
+│   ├── dto/            # ProductDTO
+│   ├── exception/      # ProductNotFoundException, InvalidProductException
 │   ├── mapper/         # Entity <-> DTO conversion
-│   ├── exception/      # Custom exceptions (business rule violations)
-│   ├── repository/     # Data access layer (in-memory and file-based implementations)
-│   ├── service/        # Business logic
-│   └── Main.java       # Console entry point
-└── test/java/org/example/
-    └── service/         # Unit tests
+│   ├── model/          # Product, Category
+│   ├── repository/     # IProductRepository + two implementations
+│   ├── service/        # Business logic and validation
+│   └── Main.java
+└── test/java/org/example/service/
 ```
 
-## Features
+## What it does
 
-- Add product (with input validation)
-- Update product (partial update: quantity, price, or both)
-- Remove product
-- Search product by name
-- List all products
-- Data persisted to a local CSV file between runs
+- Add, update, remove, search, and list products
+- Partial updates (you can update only quantity, only price, or both)
+- Input validation (no negative quantity/price, no empty name, category required)
+- Persists to a local CSV file, so data survives between runs
 
-## Architecture notes
+## A few design decisions (and why)
 
-- `IProductRepository` defines the contract for data access. Two implementations are provided:
-  - `MemoryProductRepository`: in-memory storage, used mainly for fast and isolated unit tests
-  - `ProductRepositoryFile`: persists data to a CSV file on disk
-- `ProductService` depends only on the `IProductRepository` interface, not on a concrete implementation — the repository is injected via constructor.
-- DTOs decouple the console/presentation layer from the domain entity, and are immutable by design.
-- Custom exceptions (`ProductNotFoundException`, `InvalidProductException`) represent expected business errors, handled explicitly at the entry point.
+- `IProductRepository` is an interface with two implementations: `MemoryProductRepository` (used in tests, no disk I/O involved) and `ProductRepositoryFile` (the real one, reads/writes a CSV). `ProductService` only knows about the interface — the actual implementation gets injected through the constructor.
+- DTOs exist so the console layer never touches the domain entity directly.
+- CSV persistence is done by hand (`BufferedReader`/`BufferedWriter`), no library. It's not how I'd do it in a real project, but the point here was learning file I/O, not shipping something production-ready.
 
-## How to run
+## Running it
 
 ```bash
 mvn compile exec:java -Dexec.mainClass="org.example.Main"
 ```
 
-Or simply run the `Main` class from your IDE.
-
-## How to run tests
+## Running the tests
 
 ```bash
 mvn test
 ```
 
-Or run `ProductServiceTest` directly from the IDE (with coverage support if using IntelliJ IDEA).
+I'm actively working on increasing test coverage right now the service layer is reasonably covered, but I'm still filling in edge cases (boundary values, combinations of null parameters in the update method, etc).
 
-## Status
+## What's next
 
-Actively evolving as a learning project. Planned next steps include:
-
-- Increasing test coverage (edge cases, boundary values)
-- Migrating persistence to a relational database (JDBC)
-- Possibly exposing the service layer through a REST API (Spring Boot)
+- More tests, especially boundary/edge cases
+- Swap CSV for a real database (SQLite via JDBC) just to learn JDBC
+- Maybe wrap the service layer in a small REST API later on
 
 ## Author
 
