@@ -42,9 +42,12 @@ src/
 
 ## Running it
 
-```bash
+Easiest way: open the project in your IDE and run the `Main` class directly.
+
+If you prefer the terminal:
+\`\`\`bash
 mvn compile exec:java -Dexec.mainClass="org.example.Main"
-```
+\`\`\`
 
 ## Running the tests
 
