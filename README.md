@@ -36,7 +36,7 @@ src/
 
 ## A few design decisions (and why)
 
-- `IProductRepository` is an interface with two implementations: `MemoryProductRepository` (used in tests, no disk I/O involved) and `ProductRepositoryFile` (the real one, reads/writes a CSV). `ProductService` only knows about the interface — the actual implementation gets injected through the constructor.
+- `IProductRepository` is an interface with two implementations: `MemoryProductRepository` (used in tests, no disk I/O involved) and `ProductRepositoryFile` (the real one, reads/writes a CSV). `ProductService` only knows about the interface the actual implementation gets injected through the constructor.
 - DTOs exist so the console layer never touches the domain entity directly.
 - CSV persistence is done by hand (`BufferedReader`/`BufferedWriter`), no library. It's not how I'd do it in a real project, but the point here was learning file I/O, not shipping something production-ready.
 
